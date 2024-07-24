@@ -1,0 +1,53 @@
+<%- include("../../../partials/admin/header.ejs", {
+    title: "Cadastro de categorias",
+}) %>
+
+<main class="main">
+    <form action="" method="post" class="form">
+        <div class="input-area">
+            <label for="inp-name">Nome:</label>
+            <input class="input" type="text" name="name" id="inp-name">
+            <%- include("../../../partials/errorMsg.ejs", {
+                className: "form-error-msg",
+                path: "name"
+            }) %>
+        </div>
+        <div class="input-area">
+            <label for="inp-slug">Slug:</label>
+            <input type="text" class="input" name="slug" id="inp-slug">
+            <%- include("../../../partials/errorMsg.ejs", {
+                className: "form-error-msg",
+                path: "slug"
+            }) %>
+        </div>
+        <div class="input-area">
+            <label for="inp-parent-id">Categoria Pai:</label>
+            <select class="input" name="parentId" id="inp-parent-id">
+                <option value="">Nenhum</option>
+                <% categories.forEach(category => { %>
+                    <option value="<%= category.id %>"><%= category.name %></option>
+                <% }) %>
+            </select>
+            <%- include("../../../partials/errorMsg.ejs", {
+                className: "form-error-msg",
+                path: "parentId"
+            }) %>
+        </div>
+        <div>
+            <label for="inp-status">Estado:</label>
+            <select class="input" name="status" id="inp-status">
+                <option value="inativo" selected>Inativo</option>
+                <option value="ativo">Ativo</option>
+            </select>
+            <%- include("../../../partials/errorMsg.ejs", {
+                className: "form-error-msg",
+                path: "parentId"
+            }) %>
+        </div>
+
+        <div class="form-buttons">
+            <button type="submit" class="button fill-button">Cadastrar</button>
+            <button type="reset" class="button out-button">Limpar</button>
+        </div>
+    </form>
+</main>

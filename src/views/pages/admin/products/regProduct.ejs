@@ -1,0 +1,93 @@
+<%- include("../../../partials/admin/header.ejs", {
+    title: "Cadastro de produtos",
+}) %>
+
+<main class="main">
+    <form action="" method="post" enctype="multipart/form-data" class="form">
+        <div class="input-area">
+            <label for="inp-desc">Descrição:</label>
+            <input class="input" type="text" name="desc" id="inp-desc">
+            <%- include("../../../partials/errorMsg.ejs", {
+                className: "form-error-msg",
+                path: "desc"
+            }) %>
+        </div>
+
+        <div class="form-image-grouping">
+            <div class="input-area">
+                <label for="inp-large-image" class="image-inp-label large">
+                    <img class="disabled">
+                    <div class="draging-area">
+                        <i class='bx bx-image-add'></i>
+                        <p>500x500</p>
+                    </div>
+                </label>
+                <input class="image-input" type="file" name="largeImage" accept="image/*" id="inp-large-image" hidden>
+                <%- include("../../../partials/errorMsg.ejs", {
+                    className: "form-error-msg",
+                    path: "largeImage"
+                }) %>
+            </div>
+            
+            <div class="input-area">
+                <label for="inp-small-image" class="image-inp-label small">
+                    <img class="disabled">
+                    <div class="draging-area">
+                        <i class='bx bx-image-add'></i>
+                        <p>150x150</p>
+                    </div>
+                </label>
+                <input class="image-input" type="file" name="smallImage" accept="image/*" id="inp-small-image" hidden>
+                <%- include("../../../partials/errorMsg.ejs", {
+                    className: "form-error-msg",
+                    path: "smallImage"
+                }) %>
+            </div>
+        </div>
+
+        <div class="input-area">
+            <label for="inp-price">Preço(R$):</label>
+            <input type="number" max="10000000" min="0" class="input" name="price" value="0.00" id="inp-price">
+            <%- include("../../../partials/errorMsg.ejs", {
+                className: "form-error-msg",
+                path: "price"
+            }) %>
+        </div>
+        
+        <div class="input-area">
+            <label for="inp-discont">Disconto(%):</label>
+            <input type="number" max="100" min="0" class="input" name="discont" value="0.00" id="inp-discont">
+            <%- include("../../../partials/errorMsg.ejs", {
+                className: "form-error-msg",
+                path: "discont"
+            }) %>
+        </div>
+
+        <div class="input-area">
+            <label for="inp-sale-price">Preço de venda(R$):</label>
+            <input type="" max="10000000" min="0" class="input" name="salePrice" id="inp-sale-price" readonly>
+            <%- include("../../../partials/errorMsg.ejs", {
+                className: "form-error-msg",
+                path: "salePrice"
+            }) %>
+        </div>
+
+        <div class="input-area">
+            <label for="inp-category-id">Categoria:</label>
+            <select class="input" name="categoryId" id="inp-category-id">
+                <% categories.forEach(category => { %>
+                    <option value="<%= category.id %>"><%= category.name %></option>
+                <% }) %>
+            </select>
+            <%- include("../../../partials/errorMsg.ejs", {
+                className: "form-error-msg",
+                path: "parentId"
+            }) %>
+        </div>
+
+        <div class="form-buttons">
+            <button type="submit" class="button fill-button">Cadastrar</button>
+            <button type="reset" class="button out-button">Limpar</button>
+        </div>
+    </form>
+</main>

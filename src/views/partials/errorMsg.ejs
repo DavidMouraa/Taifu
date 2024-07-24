@@ -1,0 +1,5 @@
+<% errorMsg.forEach(error => { %>
+    <% if (error.path === path) { %>
+        <p class="<%= className %> warning"><%= error.msg %></p>
+    <% } %>
+<% }) %>

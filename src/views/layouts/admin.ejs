@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taifu - Admin</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="/stylesheets/global.css">
+    <link rel="stylesheet" href="/stylesheets/buttons.css">
+    <link rel="stylesheet" href="/stylesheets/modal.css">
+    <link rel="stylesheet" href="/stylesheets/admin/sidebar.css">
+    <link rel="stylesheet" href="/stylesheets/admin/header.css">
+    <link rel="stylesheet" href="/stylesheets/admin/form.css">
+    <link rel="stylesheet" href="/stylesheets/admin/table.css">
+    <link rel="stylesheet" href="/stylesheets/admin/notice.css">
+    <script src="/javascripts/sidebar.js"></script>
+    <script src="/javascripts/header.js"></script>
+    <script src="/javascripts/modal.js"></script>
+    <script src="/javascripts/forms.js" type="module"></script>
+</head>
+<body>
+    <%- include("../partials/admin/sidebar.ejs", {
+        links: [
+            {
+                name: "Registros",
+                icon: "bx bxs-edit",
+                links: [
+                    {name: "Categorias", path: "/admin/categories"},
+                    {name: "Produtos", path: "/admin/products"}
+                ]
+            }
+        ]
+    }) %>
+    
+    <div class="page-content">
+        <%- body %>
+    </div>
+</body>
+</html>

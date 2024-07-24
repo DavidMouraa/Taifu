@@ -1,0 +1,13 @@
+<div class="background-modal close">
+    <% modals.forEach(modal => { %>
+        <div id="<%= modal.id %>" class="modal close">
+            <div class="modal-header">
+                <h2 class="modal-title"><%= modal.title %></h2>
+                <button class="button close-button">
+                    <i class='bx bx-x'></i>
+                </button>
+            </div>
+            <%- modal.content %>
+        </div>
+    <% }) %>
+</div>

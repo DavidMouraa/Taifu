@@ -1,0 +1,27 @@
+<div class="sidebar">
+    <nav class="nav">
+        <ul class="nav-menu">
+            <% links.forEach(link => { %>
+                <% if (link.links.length) { %>
+                    <li class="nav-toggle"><a class="nav-link">
+                        <i class="<%= link.icon %> nav-link-icon"></i>
+                        <span>
+                            <%= link.name %>
+                            <i class="bx bxs-down-arrow toggle-icon"></i>
+                        </span>
+                    </li></a>
+                    <ul class="nav-menu">
+                        <% link.links.forEach(subLink => { %>
+                            <li><a class="nav-link" href="<%= subLink.path %>">
+                                <i class="nav-link-icon"><%= subLink.name[0] %></i>
+                                <span>
+                                    <%= subLink.name %>
+                                </span>
+                            </a></li>
+                        <% }) %>
+                    </ul>
+                <% } %>
+            <% }) %>
+        </ul>
+    </nav>
+</div>

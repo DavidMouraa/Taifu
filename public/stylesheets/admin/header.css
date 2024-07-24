@@ -1,0 +1,33 @@
+.header {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header i {
+    font-size: 2rem;
+}
+
+.header .left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.page-title {
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+@media (min-width: 990px) {
+    .header {
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 20px;
+    }
+
+    .header .right {
+        display: none;
+    }
+}
