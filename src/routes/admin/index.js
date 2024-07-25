@@ -8,8 +8,8 @@ const router = express.Router()
 
 router.get("/", adminController.renderAdminPage)
 
-// Rotas
 router.use("/categories", categoriesRoutes)
+
 router.use("/products", productsRoutes)
 
 module.exports = router

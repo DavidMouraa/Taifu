@@ -20,7 +20,7 @@
     font-weight: 500;
 }
 
-@media (min-width: 990px) {
+@media (min-width: 1024px) {
     .header {
         flex-direction: row;
         justify-content: flex-start;

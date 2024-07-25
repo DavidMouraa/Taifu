@@ -5,25 +5,25 @@
 <main class="main">
     <form action="/admin/categories/edit" method="post" class="form">
         <input type="hidden" name="id" value="<%= pagCategory.id %>">
-        <div class="input-area">
+        <div class="inp-area">
             <label for="inp-name">Nome:</label>
-            <input class="input" type="text" name="name" id="inp-name" value="<%= pagCategory.name %>">
+            <input class="inp" type="text" name="name" id="inp-name" value="<%= pagCategory.name %>">
             <%- include("../../../partials/errorMsg.ejs", {
                 className: "form-error-msg",
                 path: "name"
             }) %>
         </div>
-        <div class="input-area">
+        <div class="inp-area">
             <label for="inp-slug">Slug:</label>
-            <input type="text" class="input" name="slug" id="inp-slug" value="<%= pagCategory.slug %>">
+            <input type="text" class="inp" name="slug" id="inp-slug" value="<%= pagCategory.slug %>">
             <%- include("../../../partials/errorMsg.ejs", {
                 className: "form-error-msg",
                 path: "slug"
             }) %>
         </div>
-        <div class="input-area">
+        <div class="inp-area">
             <label for="inp-parent-id">Categoria Pai:</label>
-            <select class="input" name="parentId" id="inp-parent-id">
+            <select class="inp" name="parentId" id="inp-parent-id">
                 <option value="">Nenhum</option>
                 <% categories.forEach(category => { %>
                     <option value="<%= category.id %>" <%= pagCategory.parentId === category.id ? "selected" : "" %> ><%= category.name %></option>
@@ -36,7 +36,7 @@
         </div>
         <div>
             <label for="inp-status">Estado:</label>
-            <select class="input" name="status" id="inp-status">
+            <select class="inp" name="status" id="inp-status">
                 <option value="inativo" <%= pagCategory.status === "inativo" && "selected" %>>Inativo</option>
                 <option value="ativo" <%= pagCategory.status === "ativo" && "selected" %>>Ativo</option>
             </select>

@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize")
 const database = require("../../config/db")
+const Category = require("./category")
 
 const Product = database.define("product", {
     desc: {
@@ -7,13 +8,13 @@ const Product = database.define("product", {
         allowNull: false,
         unique: true,
     },
-    smallImage: {
-        type: DataTypes.STRING(90),
+    smallImg: {
+        type: DataTypes.STRING,
         allowNull: false,
         unique: true
     },
-    largeImage: {
-        type: DataTypes.STRING(90),
+    largeImg: {
+        type: DataTypes.STRING,
         allowNull: false,
         unique: true
     },
@@ -27,11 +28,13 @@ const Product = database.define("product", {
     salePrice: {
         type: DataTypes.DECIMAL(10,2),
         allowNull: false,
-    },
-    categoryId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
     }
 })
+
+Product.belongsTo(Category, {
+    constraint: true,
+})
+
+Category.hasMany(Product)
 
 module.exports = Product

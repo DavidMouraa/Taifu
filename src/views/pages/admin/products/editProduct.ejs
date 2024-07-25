@@ -1,12 +1,12 @@
 <%- include("../../../partials/admin/header.ejs", {
-    title: "Cadastro de produtos",
+    title: "Editar de produto",
 }) %>
 
 <main class="main">
     <form action="" method="post" enctype="multipart/form-data" class="form">
         <div class="inp-area">
             <label for="inp-desc">Descrição:</label>
-            <input class="inp" type="text" name="desc" id="inp-desc">
+            <input class="inp" type="text" name="desc" id="inp-desc" value="<%= product.desc %>">
             <%- include("../../../partials/errorMsg.ejs", {
                 className: "form-error-msg",
                 path: "desc"
@@ -22,7 +22,7 @@
                         <p>500x500</p>
                     </div>
                 </label>
-                <input class="img-inp" type="file" name="largeImg" accept="image/*" id="inp-large-img" hidden>
+                <input class="img-inp" type="file" name="largeImg" accept="image/*" id="inp-large-img" data-default-file-path="<%= product.largeImg %>" hidden>
                 <%- include("../../../partials/errorMsg.ejs", {
                     className: "form-error-msg",
                     path: "largeImg"
@@ -37,7 +37,7 @@
                         <p>150x150</p>
                     </div>
                 </label>
-                <input class="img-inp" type="file" name="smallImg" accept="image/*" id="inp-small-img" hidden>
+                <input class="img-inp" type="file" name="smallImg" accept="image/*" id="inp-small-img" data-default-file-path="<%= product.smallImg %>" hidden>
                 <%- include("../../../partials/errorMsg.ejs", {
                     className: "form-error-msg",
                     path: "smallImg"
@@ -47,7 +47,7 @@
 
         <div class="inp-area">
             <label for="inp-price">Preço(R$):</label>
-            <input type="number" max="10000000" min="0" class="inp" name="price" value="0.00" id="inp-price">
+            <input type="number" max="10000000" min="0" class="inp" name="price" value="<%= product.price %>" id="inp-price">
             <%- include("../../../partials/errorMsg.ejs", {
                 className: "form-error-msg",
                 path: "price"
@@ -56,7 +56,7 @@
         
         <div class="inp-area">
             <label for="inp-discont">Disconto(%):</label>
-            <input type="number" max="100" min="0" class="inp" name="discont" value="0.00" id="inp-discont">
+            <input type="number" max="100" min="0" class="inp" name="discont" value="<%= product.discont %>" id="inp-discont">
             <%- include("../../../partials/errorMsg.ejs", {
                 className: "form-error-msg",
                 path: "discont"
@@ -65,7 +65,7 @@
 
         <div class="inp-area">
             <label for="inp-sale-price">Preço de venda(R$):</label>
-            <input type="" max="10000000" min="0" class="inp" name="salePrice" id="inp-sale-price" readonly>
+            <input type="number" max="10000000" min="0" class="inp" name="salePrice" id="inp-sale-price" value="<%= product.salePrice %>" readonly>
             <%- include("../../../partials/errorMsg.ejs", {
                 className: "form-error-msg",
                 path: "salePrice"
@@ -76,7 +76,7 @@
             <label for="inp-category-id">Categoria:</label>
             <select class="inp" name="categoryId" id="inp-category-id">
                 <% categories.forEach(category => { %>
-                    <option value="<%= category.id %>"><%= category.name %></option>
+                    <option value="<%= category.id %>" <%= category.id === product.categoryId && "selected" %> ><%= category.name %></option>
                 <% }) %>
             </select>
             <%- include("../../../partials/errorMsg.ejs", {
@@ -86,7 +86,7 @@
         </div>
 
         <div class="form-buttons">
-            <button type="submit" class="button fill-button">Cadastrar</button>
+            <button type="submit" class="button fill-button">Editar</button>
             <button type="reset" class="button out-button">Limpar</button>
         </div>
     </form>

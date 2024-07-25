@@ -1,7 +1,11 @@
+.table-container {
+    width: 100%;
+    border-radius: 10px;
+}
+
 .table {
     width: 100%;
     border-collapse: collapse;
-    border-radius: 10px;
 }
 
 .table thead {
@@ -18,9 +22,9 @@
 
 .table tbody tr {
     display: block;
+    border: 1px solid #c5c5c5;
     border-radius: 10px;
     background: #f3f2ff;
-    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.4);
 }
 
 .table td, .table th {
@@ -33,15 +37,6 @@
     justify-content: space-between;
 }
 
-.table .text {
-    max-width: 160px;
-    display: block;
-    height: max-content;
-    text-align: right;
-    text-wrap: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-}
 
 .table td::before {
     display: flex;
@@ -52,7 +47,17 @@
 }
 
 .table td:not(:last-child) {
-    border-bottom: 1px solid rgb(212, 212, 212);
+    border-bottom: 1px solid #c5c5c5;
+}
+
+.table .text {
+    max-width: 160px;
+    display: block;
+    height: max-content;
+    text-align: right;
+    text-wrap: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .table th {
@@ -60,32 +65,29 @@
     font-weight: 500;
 }
 
-@media (min-width: 600px) {
+@media (max-width: 480px) {
     .table .text {
-        max-width: 430px;
+        max-width: 150px;
     }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 481px) {
     .table .text {
-        max-width: 700px;
+        max-width: 350px;
     }
 }
 
-@media (min-width: 990px) {
+@media (min-width: 769px) {
     .table-container {
+        border: 1px solid #c5c5c5;
         border-radius: 10px;
-    }
-
-    .table {
-        box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.4);
         overflow: hidden;
     }
     
     .table thead {
         display: table-row-group;
     }
-
+    
     .table tbody {
         display: table-row-group;
     }
@@ -93,15 +95,17 @@
     .table tbody tr {
         display: table-row;
         box-shadow: none;
+        border: 0px;
     }
     
     .table tbody tr:not(:last-child) {
-        border-bottom: 1px solid rgb(212, 212, 212);
+        border-bottom: 1px solid #c5c5c5;
     }
     
     .table td {
         max-width: 0px;
         display: table-cell;
+        border: none;
     }
 
     .table .text {

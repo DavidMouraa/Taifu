@@ -1,6 +1,7 @@
 const Product = require("../../models/product")
 const Category = require("../../models/category")
 const { getErrorMsgs } = require("../../../public/javascripts/validations")
+const {resetTableIds} = require("../../../public/javascripts/triggers")
 
 exports.renderProductsPage = (req, res) => {
     Product.findAll().then(products => {
@@ -26,13 +27,15 @@ exports.renderRegProductPage = (req, res) => {
 exports.regProduct = (req, res) => {
     const {desc, price, discont, salePrice, categoryId} = req.body
 
-    const smallImage = req.files["smallImage"] ? req.files["smallImage"][0] : null
-    const largeImage = req.files["largeImage"] ? req.files["largeImage"][0] : null
+    const smallImg = req.files["smallImg"] ? req.files["smallImg"][0] : null
+    const largeImg = req.files["largeImg"] ? req.files["largeImg"][0] : null
+
+    console.log(smallImg)
 
     Product.create({
         desc: desc,
-        smallImage: smallImage.filename,
-        largeImage: largeImage.filename,
+        smallImg: smallImg.filename,
+        largeImg: largeImg.filename,
         price: price,
         discont: discont,
         salePrice: salePrice,
@@ -40,7 +43,46 @@ exports.regProduct = (req, res) => {
     }).then(() => {
         res.redirect("/admin/products")
     }).catch(err => {
+        console.log(err)
         req.flash("error", getErrorMsgs(err))
         res.redirect("/admin/products/register")
     })
+}
+
+exports.renderEditProductPage = (req, res) => {
+    const {id} = req.params
+    console.log(id)
+
+    Category.findAll().then(categories => {
+        Product.findByPk(id).then(product => {
+            res.render("pages/admin/products/editProduct", {
+                layout: "layouts/admin",
+                product: product,
+                categories: categories
+            })
+        }).catch(err => {
+            console.log(`Erro ao procurar por produto: ${err}`)
+        })
+    }).catch(err => {
+        console.log(`Erro ao procurar pelas categorias: ${err}`)
+    })
+}
+
+exports.delProduct = (req, res) => {
+    const {id, _method} = req.body
+
+    switch(_method) {
+        case "delete":
+            Product.destroy({where: {id: id}}).then(() => {
+                resetTableIds(Product).then(() => {
+                    res.redirect("/admin/products")
+                }).catch(err => {
+                    console.log(`Erro ao resetar os ids dos produtos: ${err}`)
+                })
+            }).catch(err => {
+                console.log(`Erro ao deletar o produto: ${err}`)
+                res.redirect("/admin/products")
+            })
+        break
+    }
 }

@@ -30,7 +30,7 @@
                         <td data-title="Categoria"><%= product.categoryId %></td>
                         <td data-title="Ações">
                             <div class="form-grouper">
-                                <form action="" method="post">
+                                <form action="/admin/products/delete" method="post">
                                     <input type="hidden" name="_method" value="delete">
                                     <input type="hidden" name="id" value="<%= product.id %>">
                                     <button type="submit" class="button action-button warning">
@@ -38,7 +38,7 @@
                                     </button>
                                 </form>
                                 <button class="button action-button">
-                                    <a href="/admin/categories/edit/<%= product.id %>"><i class="bx bx-edit"></i></a>
+                                    <a href="/admin/products/edit/<%= product.id %>"><i class="bx bx-edit"></i></a>
                                 </button>
                             </div>
                         </td>

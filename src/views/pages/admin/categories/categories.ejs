@@ -9,43 +9,45 @@
     </a>
 
     <% if (categories.length) { %>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Nome</th>
-                    <th>Slug</th>
-                    <th>Pai</th>
-                    <th>Estado</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% categories.forEach(category => { %>
+        <div class="table-container">
+            <table class="table">
+                <thead>
                     <tr>
-                        <td data-title="#"><%= category.id %></td>
-                        <td data-title="Nome"><%= category.name %></td>
-                        <td data-title="Slug"><%= category.slug %></td>
-                        <td data-title="Pai"><%= category.parentId ?? "Nenhum"%></td>
-                        <td data-title="Estado"><%= category.status %></td>
-                        <td data-title="Ações">
-                            <div class="form-grouper">
-                                <form action="" method="post">
-                                    <input type="hidden" name="_method" value="delete">
-                                    <input type="hidden" name="id" value="<%= category.id %>">
-                                    <button type="submit" class="button action-button warning">
-                                        <i class="bx bx-trash"></i>
-                                    </button>
-                                </form>
-                                <button class="button action-button">
-                                    <a href="/admin/categories/edit/<%= category.id %>"><i class="bx bx-edit"></i></a>
-                                </button>
-                            </div>
-                        </td>
+                        <th>#</th>
+                        <th>Nome</th>
+                        <th>Slug</th>
+                        <th>Pai</th>
+                        <th>Estado</th>
+                        <th>Ações</th>
                     </tr>
-                <% }) %>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <% categories.forEach(category => { %>
+                        <tr>
+                            <td data-title="#"><%= category.id %></td>
+                            <td data-title="Nome"><%= category.name %></td>
+                            <td data-title="Slug"><%= category.slug %></td>
+                            <td data-title="Pai"><%= category.parentId ?? "Nenhum"%></td>
+                            <td data-title="Estado"><%= category.status %></td>
+                            <td data-title="Ações">
+                                <div class="form-grouper">
+                                    <form action="" method="post">
+                                        <input type="hidden" name="_method" value="delete">
+                                        <input type="hidden" name="id" value="<%= category.id %>">
+                                        <button type="submit" class="button action-button warning">
+                                            <i class="bx bx-trash"></i>
+                                        </button>
+                                    </form>
+                                    <button class="button action-button">
+                                        <a href="/admin/categories/edit/<%= category.id %>"><i class="bx bx-edit"></i></a>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
     <% } else { %>
         <%- include("../../../partials/admin/noRegFoundNotice.ejs", {msg: "Nenhuma categoria foi encontrada!"}) %>
     <% } %>

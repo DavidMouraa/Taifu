@@ -87,6 +87,8 @@ exports.delCategory = (req, res) => {
         Category.destroy({where: {id: id}}).then(() => {
             resetTableIds(Category).then(() => {
                 res.redirect("/admin/categories")
+            }).catch(err => {
+                console.log("Erro ao atualizar os ids dos produtos ")
             })
         }).catch(err => {
             console.log(`Erro ao excluir categoria: ${err}`)
