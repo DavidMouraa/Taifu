@@ -1,98 +1,113 @@
-const {getErrorMsgs} = require("../../../public/javascripts/validations")
-const {resetTableIds} = require("../../../public/javascripts/triggers")
-
 const Category = require("../../models/category")
-const { Op, where } = require("sequelize")
+const { getErrorMsgs } = require("../../../public/javascripts/validations")
+const { Op } = require("sequelize")
+const fs = require("fs")
 
-exports.renderCategoriesPage = (req, res) => {
-    Category.findAll().then(categories => {
+async function renderCategoriesPage(req, res) {
+    try {
+        const categories = await Category.findAll()
+
         res.render("pages/admin/categories/categories", {
             layout: "layouts/admin",
             categories: categories
         })
-    }).catch(err => {
-        console.log(`Erro ao procurar por categorias: ${err}`)
+    } catch(err) {
+        console.log(`Erro ao renderizar a página de categorias: ${err}`)
         res.redirect("/admin")
-    })
+    }
 }
 
-exports.renderRegCategoryPage = (req, res) => {
-    Category.findAll({atributes: ["id", "name"]}).then(categories => {
+async function renderRegCategoryPage(req, res) {
+    try {
+        const categories = await Category.findAll({atributes: ["id", "name"]})
+        
         res.render("pages/admin/categories/regCategory", {
             layout: "layouts/admin",
             categories: categories
         })
-    }).catch(err => {
-        console.log(`Erro ao procurar pelas categorias: ${err}`)
-    })
+    } catch(err) {
+        console.log(`Erro ao renderizar a página de cadastro de categoria: ${err}`)
+        res.redirect("/admin/categories")
+    }
 }
 
-exports.renderEditCategoryPage = (req, res) => {
-    const {id} = req.params
-
-    Category.findByPk(id).then(category => {
-        Category.findAll({where: {id: {[Op.not] : id}}}).then(categories => {
-            res.render("pages/admin/categories/editCategory", {
-                layout: "layouts/admin",
-                pagCategory: category,
-                categories: categories
-            })
-        }).catch(err => {
-            console.log(`Erro ao procurar pelas categorias: ${err}`)
-        })
-    }).catch(err => {
-        console.log(`Erro ao procurar por categoria: ${err}`)
-    })
-}
-
-exports.editCategory = (req, res) => {
-    const {id, name, slug, parentId, status} = req.body
-    
-    Category.update({
-        name: name,
-        slug: slug,
-        parentId: parentId ? parentId : null,
-        status: status
-    }, {where: {id: id}}).then(() => {
-        res.redirect(`/admin/categories`)
-    }).catch(err => {
-        req.flash("error", getErrorMsgs(err))
-        console.log(getErrorMsgs(err))
-        res.redirect(`/admin/categories/edit/${id}`)
-    })
-}
-
-exports.regCategory = (req, res) => {
+async function regCategory(req, res) {
     const {name, slug, parentId, status} = req.body
     
-    Category.create({
-        name: name,
-        slug: slug,
-        parentId: parentId ? parentId : null,
-        status: status
-    }).then(() => {
-        resetTableIds(Category).then(() => {
-            res.redirect("/admin/categories")
+    try {
+        await Category.create({
+            name: name,
+            slug: slug,
+            parentId: parentId ? parentId : null,
+            status: status
         })
-    }).catch(err => {
+        
+        res.redirect("/admin/categories")
+    } catch(err) {
+        console.log(`Erro ao registrar categoria: ${err}`)
         req.flash("error", getErrorMsgs(err))
         res.redirect("/admin/categories/register")
-    })
+    }
 }
 
-exports.delCategory = (req, res) => {
-    const {id, _method} = req.body
+async function renderEditCategoryPage(req, res) {
+    const {id} = req.params
 
-    if (_method === "delete") {
-        Category.destroy({where: {id: id}}).then(() => {
-            resetTableIds(Category).then(() => {
-                res.redirect("/admin/categories")
-            }).catch(err => {
-                console.log("Erro ao atualizar os ids dos produtos ")
-            })
-        }).catch(err => {
-            console.log(`Erro ao excluir categoria: ${err}`)
-            res.redirect("/admin/categories")
+    try {
+        const category = await Category.findByPk(id)
+        const categories = await Category.findAll({where: {id: {[Op.not]: id}}})
+        
+        res.render("pages/admin/categories/editCategory", {
+            layout: "layouts/admin",
+            pagCategory: category,
+            categories: categories
         })
+    } catch(err) {
+        console.log(`Erro ao renderizar a página de edição de categoria: ${err}`)
+        res.redirect(`/admin/categories`)
     }
+}
+
+
+
+async function editCategory(req, res) {
+    const {id, name, slug, parentId, status} = req.body
+    
+    try {
+        await Category.update({
+            name: name,
+            slug: slug,
+            parentId: parentId ? parentId : null,
+            status: status
+        }, {where: {id: id}})
+
+        res.redirect(`/admin/categories`)
+    } catch(err) {
+        console.log(`Erro ao editar categoria: ${err}`)
+        req.flash("error", getErrorMsgs(err))
+        res.redirect(`/admin/categories/edit/${id}`)
+    }
+}
+
+
+async function delCategory(req, res) {
+    const {id} = req.body
+
+    try {
+        await Category.destroy({where: {id: id}})
+
+        res.redirect("/admin/categories")
+    } catch(err) {
+        console.log(`Erro ao excluir categoria: ${err}`)
+        res.redirect("/admin/categories")
+    }
+}
+
+module.exports = {
+    renderCategoriesPage,
+    renderRegCategoryPage,
+    renderEditCategoryPage,
+    regCategory,
+    editCategory,
+    delCategory
 }

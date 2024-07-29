@@ -5,9 +5,11 @@
         </button>
     </div>
     <div class="left">
-            <button onclick="history.back()" class="button">
-                <i class='bx bx-left-arrow-alt'></i>
-            </button>
+            <% if (typeof previusPage !== "undefined") { %>
+                <a href="<%= previusPage %>" class="button">
+                    <i class='bx bx-left-arrow-alt'></i>
+                </a>
+            <% } %>
         <h1 class="page-title"><%= title %></h1>
     </div>
 </header>

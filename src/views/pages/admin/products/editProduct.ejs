@@ -1,9 +1,12 @@
 <%- include("../../../partials/admin/header.ejs", {
     title: "Editar de produto",
+    previusPage: "/admin/products"
 }) %>
 
 <main class="main">
-    <form action="" method="post" enctype="multipart/form-data" class="form">
+    <form action="/admin/products/edit" method="post" enctype="multipart/form-data" class="form">
+        <input type="hidden" name="id" value="<%= product.id %>">
+
         <div class="inp-area">
             <label for="inp-desc">Descrição:</label>
             <input class="inp" type="text" name="desc" id="inp-desc" value="<%= product.desc %>">
@@ -13,16 +16,26 @@
             }) %>
         </div>
 
+        <div class="inp-area">
+            <label for="inp-slug">Slug:</label>
+            <input class="inp" type="text" name="slug" id="inp-slug" value="<%= product.slug %>">
+            <%- include("../../../partials/errorMsg.ejs", {
+                className: "form-error-msg",
+                path: "slug"
+            }) %>
+        </div>
+
         <div class="form-img-grouping">
             <div class="inp-area">
                 <label for="inp-large-img" class="img-inp-label large">
                     <img class="disabled">
-                    <div class="draging-area">
+                    <div class="drag-area">
                         <i class='bx bx-image-add'></i>
                         <p>500x500</p>
                     </div>
                 </label>
                 <input class="img-inp" type="file" name="largeImg" accept="image/*" id="inp-large-img" data-default-file-path="<%= product.largeImg %>" hidden>
+                <input type="hidden" name="dftLargeImg" value="<%= product.largeImg %>">
                 <%- include("../../../partials/errorMsg.ejs", {
                     className: "form-error-msg",
                     path: "largeImg"
@@ -32,12 +45,13 @@
             <div class="inp-area">
                 <label for="inp-small-img" class="img-inp-label small">
                     <img class="disabled">
-                    <div class="draging-area">
+                    <div class="drag-area">
                         <i class='bx bx-image-add'></i>
                         <p>150x150</p>
                     </div>
                 </label>
                 <input class="img-inp" type="file" name="smallImg" accept="image/*" id="inp-small-img" data-default-file-path="<%= product.smallImg %>" hidden>
+                <input type="hidden" name="dftSmallImg" value="<%= product.smallImg %>">
                 <%- include("../../../partials/errorMsg.ejs", {
                     className: "form-error-msg",
                     path: "smallImg"
@@ -75,8 +89,9 @@
         <div class="inp-area">
             <label for="inp-category-id">Categoria:</label>
             <select class="inp" name="categoryId" id="inp-category-id">
+                <option value="">Nenhum</option>
                 <% categories.forEach(category => { %>
-                    <option value="<%= category.id %>" <%= category.id === product.categoryId && "selected" %> ><%= category.name %></option>
+                    <option value="<%= category.id %>" <%= category.id === product.categoryId && "selected" %>><%= category.name %></option>
                 <% }) %>
             </select>
             <%- include("../../../partials/errorMsg.ejs", {

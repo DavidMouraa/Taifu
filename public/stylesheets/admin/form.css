@@ -39,6 +39,13 @@ label {
     background: white;
 }
 
+option {
+    height: 100px;
+    background: #f3f2ff;
+
+    padding: 10px;
+}
+
 .form-error-msg {
     font-size: .8rem;
 }
@@ -84,7 +91,7 @@ label {
     height: 200px;
 }
 
-.draging-area {
+.drag-area {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -99,23 +106,19 @@ label {
     transition: all .2s ease;
 }
 
-.draging-over .draging-area {
+.drag-area:hover, .draging-over .drag-area {
     opacity: 1;
 }
 
-.draging-area:hover {
-    opacity: 1;
-}
-
-.draging-area img, .draging-area i, .draging-area p {
+.drag-area img, .drag-area i, .drag-area p {
     pointer-events: none;
 }
 
-.draging-area i {
+.drag-area i {
     font-size: 80px;
 }
 
-.draging-area p {
+.drag-area p {
     font-weight: 500;
 }
 

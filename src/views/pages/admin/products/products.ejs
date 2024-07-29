@@ -1,4 +1,6 @@
-<%- include("../../../partials/admin/header.ejs", {title: "Produtos"}) %>
+<%- include("../../../partials/admin/header.ejs", {
+    title: "Produtos"
+}) %>
 
 <main class="main">
     <a class="button button-new" href="/admin/products/register">
@@ -7,45 +9,48 @@
     </a>
 
     <% if (products.length) { %>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Descrição</th>
-                    <th>Preço</th>
-                    <th>Desconto</th>
-                    <th>PV</th>
-                    <th>Categoria</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% products.forEach(product => { %>
+        <div class="table-container">
+            <table class="table">
+                <thead>
                     <tr>
-                        <td data-title="#"><%= product.id %></td>
-                        <td data-title="Descrição"><span class="text"><%= product.desc %></span></td>
-                        <td data-title="Preço">R$<%= product.price%></td>
-                        <td data-title="Desconto"><%= product.discont %>%</td>
-                        <td data-title="PV">R$<%= product.salePrice %></td>
-                        <td data-title="Categoria"><%= product.categoryId %></td>
-                        <td data-title="Ações">
-                            <div class="form-grouper">
-                                <form action="/admin/products/delete" method="post">
-                                    <input type="hidden" name="_method" value="delete">
-                                    <input type="hidden" name="id" value="<%= product.id %>">
-                                    <button type="submit" class="button action-button warning">
-                                        <i class="bx bx-trash"></i>
-                                    </button>
-                                </form>
-                                <button class="button action-button">
-                                    <a href="/admin/products/edit/<%= product.id %>"><i class="bx bx-edit"></i></a>
-                                </button>
-                            </div>
-                        </td>
+                        <th>#</th>
+                        <th>Descrição</th>
+                        <th>Preço</th>
+                        <th>Desconto</th>
+                        <th>PV</th>
+                        <th>Categoria</th>
+                        <th>Ações</th>
                     </tr>
-                <% }) %>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <% products.forEach(product => { %>
+                        <tr>
+                            <td data-title="#"><%= product.id %></td>
+                            <td data-title="Descrição"><span class="text"><%= product.desc %></span></td>
+                            <td data-title="Preço">R$<%= product.price%></td>
+                            <td data-title="Desconto"><%= product.discont %>%</td>
+                            <td data-title="PV">R$<%= product.salePrice %></td>
+                            <td data-title="Categoria"><%= product.category?.name ?? "Nenhuma" %></td>
+                            <td data-title="Imagem"><%= product.smallImg %></td>
+                            <td data-title="Ações">
+                                <div class="form-grouper">
+                                    <form action="/admin/products/delete" method="post">
+                                        <input type="hidden" name="_method" value="delete">
+                                        <input type="hidden" name="id" value="<%= product.id %>">
+                                        <button type="submit" class="button action-button warning">
+                                            <i class="bx bx-trash"></i>
+                                        </button>
+                                    </form>
+                                    <button class="button action-button">
+                                        <a href="/admin/products/edit/<%= product.id %>"><i class="bx bx-edit"></i></a>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
     <% } else { %>
         <%- include("../../../partials/admin/noRegFoundNotice.ejs", {msg: "Nenhum produto foi encontrado!"}) %>
     <% } %>

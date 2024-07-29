@@ -23,16 +23,17 @@
                 </thead>
                 <tbody>
                     <% categories.forEach(category => { %>
+                        <% const parentName = categories.find(_category => _category.id === category.parentId)?.name %>
+
                         <tr>
                             <td data-title="#"><%= category.id %></td>
                             <td data-title="Nome"><%= category.name %></td>
                             <td data-title="Slug"><%= category.slug %></td>
-                            <td data-title="Pai"><%= category.parentId ?? "Nenhum"%></td>
+                            <td data-title="Pai"><%= parentName ?? "Nenhum"%></td>
                             <td data-title="Estado"><%= category.status %></td>
                             <td data-title="Ações">
                                 <div class="form-grouper">
-                                    <form action="" method="post">
-                                        <input type="hidden" name="_method" value="delete">
+                                    <form action="/admin/categories/delete" method="post">
                                         <input type="hidden" name="id" value="<%= category.id %>">
                                         <button type="submit" class="button action-button warning">
                                             <i class="bx bx-trash"></i>

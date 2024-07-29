@@ -17,14 +17,21 @@ document.addEventListener("DOMContentLoaded", () => {
 function setSlugInpEvents() {
     const slugInp = document.querySelector("#inp-slug")
     const nameInp = document.querySelector("#inp-name")
+    const descInp = document.querySelector("#inp-desc")
 
     if (slugInp) {
-        // Formata o value do slug quando o inp-slug é alterado
+        // Define e formata o value do slug quando o inp-slug é alterado
         slugInp.addEventListener("change", () => slugInp.value = formatToSlug(slugInp.value))
+
+        console.log(slugInp)
         
-        // Formata o value do slug usando o value do inp-name, quando o inp-name é alterado
-        nameInp && nameInp.addEventListener("change", () => {
+        // Define Formata o value do slug quando outros inputs são alterados
+        nameInp?.addEventListener("change", () => {
             slugInp.value = formatToSlug(nameInp.value)
+        })
+
+        descInp?.addEventListener("change", () => {
+            slugInp.value = formatToSlug(descInp.value)
         })
     }
 }
@@ -75,14 +82,67 @@ function setSalePriceInpValue() {
     }
 }
 
+// Inputs de imagem
+function setImgInpEvents() {
+    const imgInps = document.querySelectorAll(".img-inp")
+
+    if (imgInps) {
+        imgInps.forEach(inp => {
+            const imgDefaultPath = inp.getAttribute("data-default-file-path")
+
+            inp.addEventListener("change", () => () => {
+                setSrcLabelImg(inp)
+            })
+
+            setSrcLabelImg(inp, imgDefaultPath)
+        })
+    }
+}
+
+function setSrcLabelImg(inp, img=null) {
+    const labelImg = inp.parentNode.querySelector("img")
+    const {files} = inp
+    const reader = new FileReader()
+    
+    if (labelImg && files.length) {
+        reader.readAsDataURL(inp.files[0])
+        
+        reader.onload = (e) => {
+            labelImg.src = e.target.result
+        }
+        
+        labelImg.classList.remove("disabled")
+    } else if(img) {
+        labelImg.src = `/images/products/${img}`
+        labelImg.classList.remove("disabled")
+    } else {
+        labelImg.classList.add("disabled")
+        setDragDropAreaVisibilite()
+    }
+
+}
+
+function setDragDropAreaVisibilite() {
+    const imgInpLabels = document.querySelectorAll(".img-inp-label")
+    
+    if (imgInpLabels.length) {
+        imgInpLabels.forEach(label => {
+            const labelImg = label.querySelector(".label-img")
+            
+            !labelImg.src ? label.classList.add("draging-over") : label.classList.remove("draging-over")
+        })
+    }
+}
+
 // Label do input de imagens
 function setImgInpLabelEvents() {
-    const lables = document.querySelectorAll(".img-inp-label")
+    const imgLables = document.querySelectorAll(".img-inp-label")
     
-    if (lables) {
-        lables.forEach(lable => {
-            lable.addEventListener("dragleave", (e) => {
+    if (imgLables) {
+        imgLables.forEach(lable => {
+            lable.addEventListener("dragleave", () => {
                 lable.classList.remove("draging-over")
+                setDragDropAreaVisibilite()
             })
             
             lable.addEventListener("dragover", (e) => {
@@ -103,37 +163,3 @@ function setImgInpLabelEvents() {
     }
 }
 
-// Inputs de imagem
-function setImgInpEvents() {
-    const imgInps = document.querySelectorAll(".img-inp")
-
-    if (imgInps) {
-        imgInps.forEach(inp => {
-            const imgDefaultPath = inp.getAttribute("data-default-file-path")
-
-            inp.addEventListener("change", () => setSrcLabelImg(inp))
-            setSrcLabelImg(inp, imgDefaultPath)
-        })
-    }
-}
-
-function setSrcLabelImg(inp, img=null) {
-    const labelImg = inp.parentNode.querySelector("img")
-    const {files} = inp
-    const reader = new FileReader()
-
-    if (labelImg && files.length) {
-        reader.readAsDataURL(inp.files[0])
-        
-        reader.onload = (e) => {
-            labelImg.src = e.target.result
-        }
-
-        labelImg.classList.remove("disabled")
-    } else if(img) {
-        labelImg.src = `/images/products/${img}`
-        labelImg.classList.remove("disabled")
-    } else {
-        labelImg.classList.add("disabled")
-    }
-}

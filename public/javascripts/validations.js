@@ -3,7 +3,7 @@
 exports.getErrorMsgs = (err) => {
     const errsMsgs = []
 
-    err.errors.forEach(error => {
+    err.errors?.forEach(error => {
         switch(error.type) {
             case "unique violation":
                 errsMsgs.push({

@@ -8,15 +8,20 @@ const Product = database.define("product", {
         allowNull: false,
         unique: true,
     },
+    slug: {
+        type: DataTypes.STRING(80),
+        allowNull: false,
+        unique: true,
+    },
     smallImg: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true
+        unique: true,
     },
     largeImg: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true
+        unique: true,
     },
     price: {
         type: DataTypes.DECIMAL(10,2),

@@ -11,21 +11,20 @@ const productImgStorage = multer.diskStorage({
         cb(null, dir)
     },
     filename: (req, file, cb) => {
-        let baseName = req.body.desc
-        const timestamp = Date.now()
+        let baseName = req.body.slug
         const originalName = file.originalname
         const ext = path.extname(originalName)
 
         switch(file.fieldname) {
-            case "smallImage": 
+            case "smallImg": 
                 baseName = `${baseName}-small`
             break
-            case "largeImage": 
+            case "largeImg":
                 baseName = `${baseName}-large`
             break
         }
         
-        cb(null, `${baseName}-${timestamp}${ext}`)
+        cb(null, `${baseName}${ext}`)
     }
 })
 

@@ -1,5 +1,6 @@
 <%- include("../../../partials/admin/header.ejs", {
     title: "Cadastro de produtos",
+    previusPage: "/admin/products"
 }) %>
 
 <main class="main">
@@ -12,12 +13,21 @@
                 path: "desc"
             }) %>
         </div>
+        
+        <div class="inp-area">
+            <label for="inp-slug">Slug:</label>
+            <input class="inp" type="text" name="slug" id="inp-slug">
+            <%- include("../../../partials/errorMsg.ejs", {
+                className: "form-error-msg",
+                path: "slug"
+            }) %>
+        </div>
 
         <div class="form-img-grouping">
             <div class="inp-area">
                 <label for="inp-large-img" class="img-inp-label large">
-                    <img class="disabled">
-                    <div class="draging-area">
+                    <img class="label-img disabled">
+                    <div class="drag-area">
                         <i class='bx bx-image-add'></i>
                         <p>500x500</p>
                     </div>
@@ -31,8 +41,8 @@
             
             <div class="inp-area">
                 <label for="inp-small-img" class="img-inp-label small">
-                    <img class="disabled">
-                    <div class="draging-area">
+                    <img class="label-img disabled">
+                    <div class="drag-area">
                         <i class='bx bx-image-add'></i>
                         <p>150x150</p>
                     </div>
@@ -75,6 +85,7 @@
         <div class="inp-area">
             <label for="inp-category-id">Categoria:</label>
             <select class="inp" name="categoryId" id="inp-category-id">
+                <option value="">Nenhum</option>
                 <% categories.forEach(category => { %>
                     <option value="<%= category.id %>"><%= category.name %></option>
                 <% }) %>

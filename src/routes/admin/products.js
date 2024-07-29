@@ -16,6 +16,11 @@ router.post("/register", productImgUpload.fields([
 
 router.get("/edit/:id", productsController.renderEditProductPage)
 
+router.post("/edit", productImgUpload.fields([
+    {name: "largeImg", maxCount: 1},
+    {name: "smallImg", maxCount: 1}
+]), productsController.editProduct)
+
 router.post("/delete", productsController.delProduct)
 
 module.exports = router
