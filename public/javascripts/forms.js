@@ -22,8 +22,6 @@ function setSlugInpEvents() {
     if (slugInp) {
         // Define e formata o value do slug quando o inp-slug é alterado
         slugInp.addEventListener("change", () => slugInp.value = formatToSlug(slugInp.value))
-
-        console.log(slugInp)
         
         // Define Formata o value do slug quando outros inputs são alterados
         nameInp?.addEventListener("change", () => {
@@ -90,7 +88,7 @@ function setImgInpEvents() {
         imgInps.forEach(inp => {
             const imgDefaultPath = inp.getAttribute("data-default-file-path")
 
-            inp.addEventListener("change", () => () => {
+            inp.addEventListener("change", () => {
                 setSrcLabelImg(inp)
             })
 
@@ -109,6 +107,7 @@ function setSrcLabelImg(inp, img=null) {
         
         reader.onload = (e) => {
             labelImg.src = e.target.result
+            setDragDropAreaVisibilite()
         }
         
         labelImg.classList.remove("disabled")
@@ -117,9 +116,9 @@ function setSrcLabelImg(inp, img=null) {
         labelImg.classList.remove("disabled")
     } else {
         labelImg.classList.add("disabled")
-        setDragDropAreaVisibilite()
     }
 
+    setDragDropAreaVisibilite()
 }
 
 function setDragDropAreaVisibilite() {
@@ -127,9 +126,11 @@ function setDragDropAreaVisibilite() {
     
     if (imgInpLabels.length) {
         imgInpLabels.forEach(label => {
+            const dragArea = label.querySelector(".drag-area")
             const labelImg = label.querySelector(".label-img")
             
-            !labelImg.src ? label.classList.add("draging-over") : label.classList.remove("draging-over")
+            console.log(labelImg)
+            !labelImg.src ? dragArea.classList.add("visible") : dragArea.classList.remove("visible")
         })
     }
 }
@@ -140,14 +141,15 @@ function setImgInpLabelEvents() {
     
     if (imgLables) {
         imgLables.forEach(lable => {
+            const dragArea = lable.querySelector(".drag-area")
+
             lable.addEventListener("dragleave", () => {
-                lable.classList.remove("draging-over")
                 setDragDropAreaVisibilite()
             })
             
             lable.addEventListener("dragover", (e) => {
                 e.preventDefault()
-                lable.classList.add("draging-over")
+                dragArea.classList.add("visible")
             })
             
             lable.addEventListener("drop", (e) => {
@@ -156,7 +158,6 @@ function setImgInpLabelEvents() {
                 const inp = lable.parentNode.querySelector("input")
                 
                 inp.files = e.dataTransfer.files
-                lable.classList.remove("draging-over")
                 setSrcLabelImg(inp)
             })
         })

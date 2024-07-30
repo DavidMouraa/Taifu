@@ -1,7 +1,6 @@
 const Category = require("../../models/category")
 const { getErrorMsgs } = require("../../../public/javascripts/validations")
 const { Op } = require("sequelize")
-const fs = require("fs")
 
 async function renderCategoriesPage(req, res) {
     try {
@@ -12,7 +11,7 @@ async function renderCategoriesPage(req, res) {
             categories: categories
         })
     } catch(err) {
-        console.log(`Erro ao renderizar a página de categorias: ${err}`)
+        console.error(`Erro ao renderizar a página de categorias: ${err.message}`)
         res.redirect("/admin")
     }
 }
@@ -26,7 +25,7 @@ async function renderRegCategoryPage(req, res) {
             categories: categories
         })
     } catch(err) {
-        console.log(`Erro ao renderizar a página de cadastro de categoria: ${err}`)
+        console.error(`Erro ao renderizar a página de cadastro de categoria: ${err.message}`)
         res.redirect("/admin/categories")
     }
 }
@@ -44,7 +43,7 @@ async function regCategory(req, res) {
         
         res.redirect("/admin/categories")
     } catch(err) {
-        console.log(`Erro ao registrar categoria: ${err}`)
+        console.error(`Erro ao registrar categoria: ${err.message}`)
         req.flash("error", getErrorMsgs(err))
         res.redirect("/admin/categories/register")
     }
@@ -63,7 +62,7 @@ async function renderEditCategoryPage(req, res) {
             categories: categories
         })
     } catch(err) {
-        console.log(`Erro ao renderizar a página de edição de categoria: ${err}`)
+        console.error(`Erro ao renderizar a página de edição de categoria: ${err.message}`)
         res.redirect(`/admin/categories`)
     }
 }
@@ -83,7 +82,7 @@ async function editCategory(req, res) {
 
         res.redirect(`/admin/categories`)
     } catch(err) {
-        console.log(`Erro ao editar categoria: ${err}`)
+        console.log(`Erro ao editar categoria: ${err.message}`)
         req.flash("error", getErrorMsgs(err))
         res.redirect(`/admin/categories/edit/${id}`)
     }
@@ -98,7 +97,7 @@ async function delCategory(req, res) {
 
         res.redirect("/admin/categories")
     } catch(err) {
-        console.log(`Erro ao excluir categoria: ${err}`)
+        console.log(`Erro ao excluir categoria: ${err.message}`)
         res.redirect("/admin/categories")
     }
 }

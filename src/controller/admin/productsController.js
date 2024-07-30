@@ -3,6 +3,8 @@ const Category = require("../../models/category")
 
 const fs = require("fs")
 const { getErrorMsgs } = require("../../../public/javascripts/validations")
+const path = require("path")
+const { Op } = require("sequelize")
 
 async function renderProductsPage(req, res) {
     try {
@@ -18,7 +20,7 @@ async function renderProductsPage(req, res) {
             products: products
         })
     } catch(err) {
-        console.log(`Erro ao renderiza a página de produtos: ${err}`)
+        console.log(`Erro ao renderiza a página de produtos: ${err.message}`)
         res.redirect("/admin")
     }
 }
@@ -31,7 +33,7 @@ async function renderRegProductPage(req, res) {
             categories: categories
         })
     } catch(err) {
-        console.log(`Erro ao renderizar a página de cadastro de produtos`)
+        console.error(`Erro ao renderizar a página de cadastro de produtos: ${err.message}`)
         res.redirect("/admin/products")
     }
 }
@@ -56,7 +58,7 @@ async function regProduct(req, res) {
 
         res.redirect("/admin/products")
     } catch(err) {
-        console.log(`Erro ao criar produto: ${err}`)
+        console.error(`Erro ao criar produto: ${err.message}`)
         req.flash("error", getErrorMsgs(err))
         res.redirect("/admin/products/register")
     }
@@ -75,7 +77,8 @@ async function renderEditProductPage(req, res) {
             categories: categories
         })
     } catch(err) {
-        console.log(`Erro ao renderizar a página de edição de produtos: ${err}`)
+        console.error(`Erro ao renderizar a página de edição de produtos: ${err.message}`)
+        throw new Error(`Erro ao renderizar a página de edição de produtos: ${err.message}`)
     }
 }
 
@@ -93,11 +96,11 @@ async function editProduct(req, res) {
         dftImg: dftSmallImg
     }]
 
-    console.log(dftSmallImg, dftLargeImg)
-
     try {
         const currentSlug = await Product.findOne({where: {id: id}, attributes: ["slug"]}).slug
+        const productImgsPath = `${process.cwd()}/public/images/products`
 
+        // Renomeia as imagens
         imgs.forEach(imgItem => {
             if (!imgItem.img && currentSlug !== slug) {
                 const { dftImg } = imgItem
@@ -113,7 +116,10 @@ async function editProduct(req, res) {
                 }
 
                 fs.rename(imgPaths.old, imgPaths.new, err => {
-                   err && console.log(`Erro ao renomear imagem: ${err}`)
+                    if (err) {
+                        console.error(`Erro ao renomear imagem: ${err.message}`)
+                        throw new Error(`Erro ao renomear imagem: ${err.message}`)
+                    }
                 })
 
                 switch(imgSize) {
@@ -127,6 +133,7 @@ async function editProduct(req, res) {
             }
         })
 
+        // Atualiza o valor dos atributos
         await Product.update({
             desc: desc,
             slug: slug,
@@ -137,11 +144,39 @@ async function editProduct(req, res) {
             salePrice: salePrice,
             categoryId: categoryId ? categoryId : null,
         }, {where: {id: id}})
+
+        // Apaga as imagens de produtos que não possuem um produto
+        fs.readdir(productImgsPath, (err, files) => {
+            let filePath = ""
+
+            if (err) {
+                console.error(`Erro ao ler o diretorio: ${err.message}`)
+                throw new Error(`Erro ao ler diretorio: ${err.message}`)
+            }
+                
+            files.forEach(async (file) => {
+                const products = await Product.findOne({
+                    where: {[Op.or]: [
+                        {largeImg: file},
+                        {smallImg: file}
+                    ]}
+                })
+
+                filePath = path.join(productImgsPath, file)
+
+                !products && fs.unlink(filePath, (err) => {
+                    if (err) {
+                        console.error(`Erro ao deletar arquivo: ${err.message}`)
+                        throw new Error(`Erro ao deletar arquivo: ${err.message}`)
+                    }
+                })
+            })
+        })
         
         res.redirect("/admin/products")
     } catch(err) {
+        console.error(`Erro ao editar categoria: ${err.message}`)
         res.redirect(`/admin/products/edit/${id}`)
-        console.log(`Erro ao editar categoria: ${err}`)
     }
 }
 
@@ -158,13 +193,16 @@ async function delProduct(req, res) {
             const path = `${process.cwd()}/public/images/products/${productImgs[img]}`
 
             fs.unlink(path, (err) => {
-                err && console.log(`Erro ao deletar imagem do produto: ${err}`)
+                if (err) {
+                    console.error(`Erro ao deletar imagem do produto: ${err.message}`)
+                    throw new Error(`Erro ao deletar imagem do produto: ${err.message}`)
+                }
             })
         }
 
         res.redirect("/admin/products")
     } catch(err) {
-        console.log(`Erro ao deletar o produto: ${err}`)
+        console.error(`Erro ao deletar o produto: ${err.message}`)
         res.redirect("/admin/products")
     }
 }
